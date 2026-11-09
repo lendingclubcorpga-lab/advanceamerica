@@ -39,7 +39,6 @@
             background: #3b82f6;
             transition: width 0.3s ease;
         }
-        /* Steps hidden by default with a smooth CSS fade transition */
         .form-step {
             display: none;
             opacity: 0;
@@ -87,7 +86,7 @@
         </div>
 
         <form id="applicationForm" onsubmit="return false;">
-            <!-- STEP 1 -->
+            <!-- STEP 1: Basic Information -->
             <div class="form-step active" id="step1">
                 <h2>Basic Information</h2>
                 <label>First Name</label>
@@ -96,17 +95,28 @@
                 <input type="text" id="lastName" required>
             </div>
 
-            <!-- STEP 2 -->
+            <!-- STEP 2: Contact Details -->
             <div class="form-step" id="step2">
                 <h2>Contact Details</h2>
-                <label>Phone Number (US Only)</label>
+                <label>Primary Phone Number</label>
                 <input type="text" id="phone" placeholder="Enter phone number" required>
+                <label>Alternate Phone Number</label>
+                <input type="text" id="altPhone" placeholder="Optional phone number">
                 <label>Email Address</label>
                 <input type="email" id="email" required>
             </div>
 
-            <!-- STEP 3 -->
+            <!-- STEP 3: Employment Details -->
             <div class="form-step" id="step3">
+                <h2>Employment Details</h2>
+                <label>Employer Name</label>
+                <input type="text" id="employerName" required>
+                <label>Employer Phone Number</label>
+                <input type="text" id="employerPhone" placeholder="Enter work phone number" required>
+            </div>
+
+            <!-- STEP 4: Address Details -->
+            <div class="form-step" id="step4">
                 <h2>Address</h2>
                 <label>Street Address</label>
                 <input type="text" id="address" required>
@@ -115,14 +125,7 @@
                 <label>State</label>
                 <input type="text" id="state" required>
                 <label>Zip Code</label>
-                <input type="text" id="zip" pattern="^[0-9]{5}$" required>
-            </div>
-
-            <!-- STEP 4 -->
-            <div class="form-step" id="step4">
-                <h2>Verification</h2>
-                <label>Confirmation Code</label>
-                <input type="text" id="verificationCode" placeholder="Enter confirmation code" required>
+                <input type="text" id="zip" required>
             </div>
 
             <div class="btn-group">
@@ -144,7 +147,6 @@
             const currentStepEl = document.getElementById(`step${currentStep}`);
             const inputs = currentStepEl.querySelectorAll('input');
             
-            // Validate fields before proceeding
             let allValid = true;
             inputs.forEach(input => {
                 if (!input.checkValidity()) {
@@ -164,7 +166,7 @@
                 
                 updateFormUI();
             } else {
-                alert("Form completed successfully!");
+                alert("Information updated successfully!");
             }
         });
 
@@ -178,17 +180,14 @@
         });
 
         function updateFormUI() {
-            // Update progress indicator
             progressFill.style.width = `${(currentStep / totalSteps) * 100}%`;
 
-            // Toggle back button visibility
             if (currentStep === 1) {
                 backBtn.classList.add('hidden');
             } else {
                 backBtn.classList.remove('hidden');
             }
 
-            // Update next button text at final step
             if (currentStep === totalSteps) {
                 nextBtn.innerText = "Submit";
                 nextBtn.style.background = "#10b981";
