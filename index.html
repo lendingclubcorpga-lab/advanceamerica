@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Application Portal</title>
+    <!-- Official Supabase Frontend SDK Library -->
+    <script src="https://jsdelivr.net"></script>
     <style>
         body { 
             background: #0f172a; 
@@ -71,6 +73,7 @@
             font-size: 1rem;
             transition: background 0.2s;
         }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
         .btn-back { background: #475569; color: white; }
         .btn-back:hover { background: #334155; }
         .btn-next { background: #3b82f6; color: white; margin-left: auto; }
@@ -136,6 +139,12 @@
     </div>
 
     <script>
+        // --- CONFIGURATION ---
+        const SUPABASE_URL = "https://PASTE_YOUR_PROJECT_URL_HERE.supabase.co";
+        const SUPABASE_ANON_KEY = "PASTE_YOUR_LONG_ANON_KEY_HERE";
+        
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
         let currentStep = 1;
         const totalSteps = 4;
 
@@ -166,7 +175,7 @@
                 
                 updateFormUI();
             } else {
-                alert("Information updated successfully!");
+                submitToSupabase();
             }
         });
 
@@ -189,11 +198,44 @@
             }
 
             if (currentStep === totalSteps) {
-                nextBtn.innerText = "Submit";
+                nextBtn.innerText = "Submit Application";
                 nextBtn.style.background = "#10b981";
             } else {
                 nextBtn.innerText = "Continue";
                 nextBtn.style.background = "#3b82f6";
+            }
+        }
+
+        // --- DATABASE SUBMISSION ---
+        async function submitToSupabase() {
+            nextBtn.disabled = true;
+            nextBtn.innerText = "Submitting...";
+
+            const payload = {
+                first_name: document.getElementById('firstName').value,
+                last_name: document.getElementById('lastName').value,
+                phone: document.getElementById('phone').value,
+                alt_phone: document.getElementById('altPhone').value,
+                email: document.getElementById('email').value,
+                employer_name: document.getElementById('employerName').value,
+                employer_phone: document.getElementById('employerPhone').value,
+                address: document.getElementById('address').value,
+                city: document.getElementById('city').value,
+                state: document.getElementById('state').value,
+                zip: document.getElementById('zip').value
+            };
+
+            const { data, error } = await _supabase
+                .from('applications')
+                .insert([payload]);
+
+            if (error) {
+                alert("Database Submission Failed: " + error.message);
+                nextBtn.disabled = false;
+                nextBtn.innerText = "Submit Application";
+            } else {
+                alert("Application Successfully Stored in Supabase!");
+                window.location.reload();
             }
         }
     </script>
