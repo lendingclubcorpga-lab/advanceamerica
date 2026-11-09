@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Animated Landing Page</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://tailwindcss.com"></script>
+    <!-- AOS Animation Library CSS -->
+    <link href="https://unpkg.com" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+        }
+    </style>
+</head>
+<body class="text-white font-sans overflow-x-hidden">
+
+    <!-- Navbar -->
+    <nav class="p-6 flex justify-between items-center max-w-6xl mx-auto">
+        <div class="text-2xl font-bold tracking-wider text-indigo-400">BRAND</div>
+        <a href="#features" class="bg-indigo-600 hover:bg-indigo-500 transition px-6 py-2 rounded-full text-sm font-semibold">Explore</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="min-h-[80vh] flex flex-col justify-center items-center text-center px-4 max-w-4xl mx-auto">
+        <h1 data-aos="zoom-in" data-aos-duration="1000" class="text-5xl md:text-7xl font-extrabold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
+            Build the Future
+        </h1>
+        <p data-aos="fade-up" data-aos-delay="300" class="text-xl md:text-2xl text-slate-300 mb-8 max-w-2xl">
+            We create stunning digital experiences that are <span id="typed-text" class="text-indigo-400 font-semibold"></span>.
+        </p>
+        <div data-aos="fade-up" data-aos-delay="600">
+            <a href="#" class="bg-gradient-to-r from-indigo-500 to-purple-600 hover:scale-105 transform transition shadow-lg shadow-indigo-500/30 px-8 py-4 rounded-xl font-bold text-lg inline-block">
+                Get Started Free
+            </a>
+        </div>
+    </header>
+
+    <!-- Features Section (Triggers on Scroll) -->
+    <section id="features" class="py-24 px-4 max-w-6xl mx-auto">
+        <h2 data-aos="fade-up" class="text-3xl md:text-4xl font-bold text-center mb-16">Why Choose Us?</h2>
+        
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Card 1 -->
+            <div data-aos="fade-right" data-aos-delay="100" class="bg-slate-800/50 border border-slate-700 p-8 rounded-2xl backdrop-blur-sm">
+                <div class="text-3xl mb-4">⚡</div>
+                <h3 class="text-xl font-bold mb-2">Lightning Fast</h3>
+                <p class="text-slate-400">Optimised for extreme speeds and seamless user experiences.</p>
+            </div>
+            <!-- Card 2 -->
+            <div data-aos="fade-up" data-aos-delay="200" class="bg-slate-800/50 border border-slate-700 p-8 rounded-2xl backdrop-blur-sm">
+                <div class="text-3xl mb-4">🎨</div>
+                <h3 class="text-xl font-bold mb-2">Beautiful Design</h3>
+                <p class="text-slate-400">Meticulously crafted layouts tailored to your unique brand.</p>
+            </div>
+            <!-- Card 3 -->
+            <div data-aos="fade-left" data-aos-delay="300" class="bg-slate-800/50 border border-slate-700 p-8 rounded-2xl backdrop-blur-sm">
+                <div class="text-3xl mb-4">📈</div>
+                <h3 class="text-xl font-bold mb-2">Scale Easily</h3>
+                <p class="text-slate-400">Built on reliable infrastructure that grows alongside your users.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 text-center text-slate-500 text-sm border-t border-slate-800">
+        <p>&copy; 2026 Brand Inc. All rights reserved.</p>
+    </footer>
+
+    <!-- JS Libraries for Animations -->
+    <script src="https://unpkg.com"></script>
+    <script src="https://unpkg.com"></script>
+    <script>
+        // Initialize Scroll Animations
+        AOS.init({
+            once: true, // Animations happen only once while scrolling down
+            duration: 800
+        });
+
+        // Initialize Typing Animation
+        var typed = new Typed('#typed-text', {
+            strings: ['fast.', 'beautiful.', 'interactive.', 'future-proof.'],
+            typeSpeed: 60,
+            backSpeed: 40,
+            loop: true
+        });
+    </script>
+</body>
+</html>
