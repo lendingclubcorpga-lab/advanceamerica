@@ -1,19 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Application Portal</title>
-    <script src="https://tailwindcss.com"></script>
-    <!-- GSAP for advanced, smooth step animations -->
-    <script src="https://cloudflare.com"></script>
-    <!-- Official Supabase Frontend SDK Client library -->
-    <script src="https://jsdelivr.net"></script>
+    <title>Application Portal</title>
     <style>
-        body { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); }
-        .form-step { display: none; opacity: 0; transform: translateY(20px); }
-        .form-step.active { display: block; }
+        /* Standalone fallback styling built directly into the file */
+        body { 
+            background: #0f172a; 
+            color: #ffffff; 
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .form-container {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border: 1px solid #475569;
+            background: #334155;
+            color: white;
+            box-sizing: border-box;
+        }
+        button {
+            background: #2563eb;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover { background: #1d4ed8; }
     </style>
+</head>
+
 </head>
 <body class="text-white font-sans min-h-screen flex items-center justify-center px-4 py-12">
 
