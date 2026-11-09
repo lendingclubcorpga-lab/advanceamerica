@@ -7,6 +7,8 @@
     <script src="https://tailwindcss.com"></script>
     <!-- GSAP for advanced, smooth step animations -->
     <script src="https://cloudflare.com"></script>
+    <!-- Official Supabase Frontend SDK Client library -->
+    <script src="https://jsdelivr.net"></script>
     <style>
         body { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); }
         .form-step { display: none; opacity: 0; transform: translateY(20px); }
@@ -84,7 +86,6 @@
                 <div class="space-y-4">
                     <div>
                         <label class="block text-sm font-medium text-slate-400 mb-1">Social Security Number (SSN)</label>
-                        <!-- Uses password type to natively display as masked dots **** -->
                         <input type="password" id="ssn" placeholder="•••-••-••••" maxlength="9" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white tracking-widest focus:outline-none focus:border-indigo-500">
                     </div>
                 </div>
@@ -133,13 +134,19 @@
 
             <!-- Navigation Buttons -->
             <div class="mt-8 flex justify-between">
-                <button type="button" id="prevBtn" class="px-6 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold visibility-hidden hidden transition">Back</button>
+                <button type="button" id="prevBtn" class="px-6 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold hidden transition">Back</button>
                 <button type="button" id="nextBtn" class="ml-auto px-6 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition">Continue</button>
             </div>
         </form>
     </div>
 
     <script>
+        // --- CONFIGURE YOUR SUPABASE ACCESS HERE ---
+        const SUPABASE_URL = "https://supabase.com/dashboard/project/xjzhhsdiiyecupjaytjj/settings/api-keys";
+        const SUPABASE_ANON_KEY = "sb_publishable_dK23MWcZWm4dTBqCkAASnw_Hxcl_Y7h";
+        
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
         let currentStep = 1;
         const totalSteps = 6;
         const steps = document.querySelectorAll('.form-step');
@@ -147,16 +154,9 @@
         const prevBtn = document.getElementById('prevBtn');
         const progress = document.getElementById('progress');
 
-        // Smoothly animate initial view
         gsap.to("#step1", { opacity: 1, y: 0, duration: 0.5 });
 
         nextBtn.addEventListener('click', () => {
             const currentInputs = steps[currentStep - 1].querySelectorAll('input');
             let valid = true;
             currentInputs.forEach(input => { if(!input.checkValidity()) { input.reportValidity(); valid = false; } });
-            
-            if (!valid) return;
-
-            if (currentStep < totalSteps) {
-                // Outbound Animation
-                gsap.to(steps[currentStep - 1], { opacity: 0, y: -20, duration: 0.3, onComplete: () => {
