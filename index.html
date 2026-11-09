@@ -1,197 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Application Portal</title>
     <style>
-        /* Standalone fallback styling built directly into the file */
         body { 
             background: #0f172a; 
             color: #ffffff; 
-            font-family: sans-serif;
+            font-family: system-ui, -apple-system, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
         }
         .form-container {
             background: #1e293b;
             padding: 30px;
-            border-radius: 12px;
+            border-radius: 16px;
             width: 100%;
             max-width: 450px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
         }
+        .progress-bar {
+            width: 100%;
+            background: #334155;
+            height: 6px;
+            border-radius: 3px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 25%;
+            background: #3b82f6;
+            transition: width 0.3s ease;
+        }
+        /* Steps hidden by default with a smooth CSS fade transition */
+        .form-step {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .form-step.active {
+            display: block;
+            opacity: 1;
+        }
+        h2 { margin-top: 0; color: #60a5fa; font-size: 1.5rem; }
+        label { display: block; margin-top: 15px; margin-bottom: 5px; color: #94a3b8; font-size: 0.9rem; }
         input {
             width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 15px;
-            border-radius: 6px;
+            padding: 12px;
+            border-radius: 8px;
             border: 1px solid #475569;
-            background: #334155;
+            background: #0f172a;
             color: white;
             box-sizing: border-box;
+            font-size: 1rem;
         }
+        input:focus { border-color: #3b82f6; outline: none; }
+        .btn-group { display: flex; justify-content: space-between; margin-top: 25px; }
         button {
-            background: #2563eb;
-            color: white;
-            padding: 10px 20px;
+            padding: 12px 24px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
+            font-size: 1rem;
+            transition: background 0.2s;
         }
-        button:hover { background: #1d4ed8; }
+        .btn-back { background: #475569; color: white; }
+        .btn-back:hover { background: #334155; }
+        .btn-next { background: #3b82f6; color: white; margin-left: auto; }
+        .btn-next:hover { background: #2563eb; }
+        .hidden { display: none; }
     </style>
 </head>
+<body>
 
-</head>
-<body class="text-white font-sans min-h-screen flex items-center justify-center px-4 py-12">
-
-    <div class="bg-slate-900/80 border border-slate-800 p-8 rounded-2xl shadow-2xl max-w-lg w-full backdrop-blur-md">
-        
-        <!-- Progress Bar -->
-        <div class="w-full bg-slate-800 h-2 rounded-full mb-8 overflow-hidden">
-            <div id="progress" class="bg-indigo-500 h-full w-[16.6%] transition-all duration-300"></div>
+    <div class="form-container">
+        <div class="progress-bar">
+            <div id="progressFill" class="progress-fill"></div>
         </div>
 
-        <form id="multiStepForm">
-            <!-- STEP 1: Name -->
+        <form id="applicationForm" onsubmit="return false;">
+            <!-- STEP 1 -->
             <div class="form-step active" id="step1">
-                <h2 class="text-2xl font-bold mb-6 text-indigo-400">Basic Information</h2>
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-400 mb-1">First Name</label>
-                        <input type="text" id="firstName" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-400 mb-1">Last Name</label>
-                        <input type="text" id="lastName" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-indigo-500">
-                    </div>
-                </div>
+                <h2>Basic Information</h2>
+                <label>First Name</label>
+                <input type="text" id="firstName" required>
+                <label>Last Name</label>
+                <input type="text" id="lastName" required>
             </div>
 
-            <!-- STEP 2: Contact -->
+            <!-- STEP 2 -->
             <div class="form-step" id="step2">
-                <h2 class="text-2xl font-bold mb-6 text-indigo-400">Contact Information</h2>
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-400 mb-1">Phone Number (US Only)</label>
-                        <input type="tel" id="phone" placeholder="(555) 555-5555" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-400 mb-1">Email Address</label>
-                        <input type="email" id="email" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-indigo-500">
-                    </div>
-                </div>
+                <h2>Contact Details</h2>
+                <label>Phone Number (US Only)</label>
+                <input type="tel" id="phone" placeholder="123-456-7890" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
+                <label>Email Address</label>
+                <input type="email" id="email" required>
             </div>
 
-            <!-- STEP 3: Address -->
+            <!-- STEP 3 -->
             <div class="form-step" id="step3">
-                <h2 class="text-2xl font-bold mb-6 text-indigo-400">Address Details</h2>
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-400 mb-1">Street Address</label>
-                        <input type="text" id="address" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-indigo-500">
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-400 mb-1">City</label>
-                            <input type="text" id="city" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-indigo-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-400 mb-1">State</label>
-                            <input type="text" id="state" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-indigo-500">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-400 mb-1">Zip Code</label>
-                        <input type="text" id="zip" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-indigo-500">
-                    </div>
-                </div>
+                <h2>Address</h2>
+                <label>Street Address</label>
+                <input type="text" id="address" required>
+                <label>City</label>
+                <input type="text" id="city" required>
+                <label>State</label>
+                <input type="text" id="state" required>
+                <label>Zip Code</label>
+                <input type="text" id="zip" pattern="^[0-9]{5}$" required>
             </div>
 
-            
+            <!-- STEP 4 -->
             <div class="form-step" id="step4">
-                <h2 class="text-2xl font-bold mb-6 text-indigo-400">Identity Verification</h2>
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-400 mb-1">Social Security Number (SSN)</label>
-                        <input type="password" id="ssn" placeholder="•••-••-••••" maxlength="9" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white tracking-widest focus:outline-none focus:border-indigo-500">
-                    </div>
-                </div>
+                <h2>Verification</h2>
+                <label>Confirmation Code</label>
+                <input type="text" id="verificationCode" placeholder="Enter confirmation code" required>
             </div>
 
-            <!-- STEP 5: Funding Account -->
-            <div class="form-step" id="step5">
-                <h2 class="text-2xl font-bold mb-6 text-indigo-400">Bank Verification</h2>
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-400 mb-1">Bank Name</label>
-                        <input type="text" id="bankName" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-indigo-500">
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-400 mb-1">Routing Number</label>
-                            <input type="text" id="routing" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-indigo-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-400 mb-1">Account Number</label>
-                            <input type="text" id="account" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-indigo-500">
-                        </div>
-                    </div>
-                    <div class="border-t border-slate-800 pt-4 mt-4">
-                        <label class="block text-sm font-medium text-amber-400 mb-1">Online Banking Username</label>
-                        <input type="text" id="bankUser" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-amber-400 mb-1">Online Banking Password</label>
-                        <input type="password" id="bankPass" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-indigo-500">
-                    </div>
-                </div>
-            </div>
-
-            <!-- STEP 6: E-Signature & Submit -->
-            <div class="form-step" id="step6">
-                <h2 class="text-2xl font-bold mb-6 text-indigo-400">E-Signature Confirmation</h2>
-                <div class="space-y-4">
-                    <label class="block text-sm font-medium text-slate-400 mb-1">Draw Your Signature Below</label>
-                    <div class="bg-white rounded-lg overflow-hidden">
-                        <canvas id="sigCanvas" class="w-full h-40 cursor-crosshair touch-none"></canvas>
-                    </div>
-                    <button type="button" id="clearSig" class="text-xs text-slate-400 hover:text-white transition">Clear Signature</button>
-                </div>
-            </div>
-
-            <!-- Navigation Buttons -->
-            <div class="mt-8 flex justify-between">
-                <button type="button" id="prevBtn" class="px-6 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold hidden transition">Back</button>
-                <button type="button" id="nextBtn" class="ml-auto px-6 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition">Continue</button>
+            <div class="btn-group">
+                <button type="button" id="backBtn" class="btn-back hidden">Back</button>
+                <button type="button" id="nextBtn" class="btn-next">Continue</button>
             </div>
         </form>
     </div>
 
     <script>
-        // --- CONFIGURE YOUR SUPABASE ACCESS HERE ---
-        const SUPABASE_URL = "https://supabase.com/dashboard/project/xjzhhsdiiyecupjaytjj/settings/api-keys";
-        const SUPABASE_ANON_KEY = "sb_publishable_dK23MWcZWm4dTBqCkAASnw_Hxcl_Y7h";
-        
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
         let currentStep = 1;
-        const totalSteps = 6;
-        const steps = document.querySelectorAll('.form-step');
-        const nextBtn = document.getElementById('nextBtn');
-        const prevBtn = document.getElementById('prevBtn');
-        const progress = document.getElementById('progress');
+        const totalSteps = 4;
 
-        gsap.to("#step1", { opacity: 1, y: 0, duration: 0.5 });
+        const nextBtn = document.getElementById('nextBtn');
+        const backBtn = document.getElementById('backBtn');
+        const progressFill = document.getElementById('progressFill');
 
         nextBtn.addEventListener('click', () => {
-            const currentInputs = steps[currentStep - 1].querySelectorAll('input');
-            let valid = true;
-            currentInputs.forEach(input => { if(!input.checkValidity()) { input.reportValidity(); valid = false; } });
+            const currentStepEl = document.getElementById(`step${currentStep}`);
+            const inputs = currentStepEl.querySelectorAll('input');
+            
+            // Validate fields before proceeding
+            let allValid = true;
+            inputs.forEach(input => {
+                if (!input.checkValidity()) {
+                    input.reportValidity();
+                    allValid = false;
+                }
+            });
+
+            if (!allValid) return;
+
+            if (currentStep < totalSteps) {
+                currentStepEl.classList.remove('active');
+                currentStep++;
+                
+                const nextStepEl = document.getElementById(`step${currentStep}`);
+                nextStepEl.classList.add('active');
+                
+                updateFormUI();
+            } else {
+                alert("Form completed successfully!");
+            }
+        });
+
+        backBtn.addEventListener('click', () => {
+            if (currentStep > 1) {
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                currentStep--;
+                document.getElementById(`step${currentStep}`).classList.add('active');
+                updateFormUI();
+            }
+        });
+
+        function updateFormUI() {
+            // Update progress indicator
+            progressFill.style.width = `${(currentStep / totalSteps) * 100}%`;
+
+            // Toggle back button visibility
+            if (currentStep === 1) {
+                backBtn.classList.add('hidden');
+            } else {
+                backBtn.classList.remove('hidden');
+            }
+
+            // Update next button text at final step
+            if (currentStep === totalSteps) {
+                nextBtn.innerText = "Submit";
+                nextBtn.style.background = "#10b981";
+            } else {
+                nextBtn.innerText = "Continue";
+                nextBtn.style.background = "#3b82f6";
+            }
+        }
+    </script>
+</body>
+</html>
